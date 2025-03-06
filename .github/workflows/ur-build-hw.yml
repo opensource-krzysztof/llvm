@@ -1,8 +1,25 @@
-name: UR - Build adapters, test on HW
+name: UR - Build adapters, test on HW.
 
 on:
   workflow_call:
     inputs:
+      reset_intel_gpu:
+        type: string
+        required: False
+      extra_lit_opts:
+        description: |
+          Extra options to be added to LIT_OPTS.
+        type: string
+        default: ''
+      target_devices:
+        type: string
+        required: False
+      image:
+        type: string
+        required: False
+      image_options:
+        type: string
+        required: True
       adapter_name:
         required: true
         type: string
@@ -66,7 +83,7 @@ jobs:
   adapter_build_hw:
     name: Build & CTS
     # run only on upstream; forks won't have the HW
-    if: github.repository == 'intel/llvm'
+    #if: github.repository == 'intel/llvm'
     strategy:
       fail-fast: false
       matrix:
@@ -83,7 +100,9 @@ jobs:
         compiler: [{c: gcc, cxx: g++}]
 
     runs-on: ${{inputs.runner_name}}
-
+    container:
+      image: ${{ inputs.image || 'ubuntu'}}
+      options: ${{ inputs.image_options }}
     steps:
     # TODO:
     # - investigate if DUR_CONFORMANCE_AMD_ARCH could be removed
