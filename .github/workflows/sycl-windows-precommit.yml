@@ -1,6 +1,6 @@
 # name: SYCL Pre Commit on Windows
 
-# on:
+on:
 #   pull_request:
 #     branches:
 #     - sycl
