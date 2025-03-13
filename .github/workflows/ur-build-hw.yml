@@ -102,6 +102,9 @@ jobs:
     runs-on: ${{inputs.runner_name}}
     container:
       image: ghcr.io/intel/llvm/ubuntu2404_base
+      credentials:
+         username: ${{ secrets.USER }}
+         password: ${{ secrets.KEY }}
       options: ${{ inputs.image_options }}
     steps:
     # TODO:
