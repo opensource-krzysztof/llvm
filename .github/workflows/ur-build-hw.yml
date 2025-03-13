@@ -101,7 +101,7 @@ jobs:
 
     runs-on: ${{inputs.runner_name}}
     container:
-      image: ${{ inputs.image }}
+      image: ghcr.io/intel/llvm/ubuntu2404_base
       options: ${{ inputs.image_options }}
     steps:
     # TODO:
