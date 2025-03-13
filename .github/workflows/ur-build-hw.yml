@@ -104,9 +104,8 @@ jobs:
       image: ghcr.io/intel/llvm/ubuntu2404_base
       options: ${{ inputs.image_options }}
       credentials:
-        username: ${{ secrets.KEY }}
-        password: ${{ secrets.USER }}
-         
+         username: ${{ secrets.KEY }}
+         password: ${{ secrets.USER }}
     steps:
     # TODO:
     # - investigate if DUR_CONFORMANCE_AMD_ARCH could be removed
@@ -120,6 +119,7 @@ jobs:
     #     registry: ghcr.io
     #     username: ${{ github.actor }}
     #     password: ${{ secrets.GITHUB_TOKEN }}
+    
     - name: Checkout LLVM
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
