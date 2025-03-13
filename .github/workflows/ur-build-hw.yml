@@ -104,7 +104,7 @@ jobs:
       image: ghcr.io/intel/llvm/ubuntu2404_base
       credentials:
          username: opensource-krzysztof
-         password: 's'
+         password: ${{ secrets.KEY }}
       options: ${{ inputs.image_options }}
     steps:
     # TODO:
