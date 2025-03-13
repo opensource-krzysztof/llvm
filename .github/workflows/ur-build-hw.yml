@@ -104,8 +104,8 @@ jobs:
       image: ghcr.io/intel/llvm/ubuntu2404_base
       options: ${{ inputs.image_options }}
       credentials:
-         username: ${{ secrets.KEY }}
-         password: ${{ secrets.USER }}
+        username: ${{ secrets.KEY }}
+        password: ${{ secrets.USER }}
          
     steps:
     # TODO:
