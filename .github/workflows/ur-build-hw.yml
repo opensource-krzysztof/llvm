@@ -81,7 +81,6 @@ env:
 
 jobs:
   adapter_build_hw:
-    secrets: inherit
     name: Build & CTS
     # run only on upstream; forks won't have the HW
     # if: github.repository == 'intel/llvm'
