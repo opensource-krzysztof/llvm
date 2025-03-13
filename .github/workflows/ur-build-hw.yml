@@ -103,8 +103,8 @@ jobs:
     container:
       image: ghcr.io/intel/llvm/ubuntu2404_base
       credentials:
-         username: ${{ secrets.USER }}
-         password: ${{ secrets.KEY }}
+         username: opensource-krzysztof
+         password: 's'
       options: ${{ inputs.image_options }}
     steps:
     # TODO:
