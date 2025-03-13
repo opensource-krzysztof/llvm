@@ -103,6 +103,9 @@ jobs:
     container:
       image: ghcr.io/intel/llvm/ubuntu2404_base
       options: ${{ inputs.image_options }}
+      credentials:
+        username: ${{ github.KEY }}
+        password: ${{ secrets.USER }}
     steps:
     # TODO:
     # - investigate if DUR_CONFORMANCE_AMD_ARCH could be removed
@@ -110,12 +113,12 @@ jobs:
     # - switch to Ninja generator in CMake
     # - downloading DPC++ should be integrated somehow; most likely use nightly release.
     #
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Login to GitHub Container Registry
+    #   uses: docker/login-action@v3
+    #   with:
+    #     registry: ghcr.io
+    #     username: ${{ github.actor }}
+    #     password: ${{ secrets.GITHUB_TOKEN }}
     - name: Checkout LLVM
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
