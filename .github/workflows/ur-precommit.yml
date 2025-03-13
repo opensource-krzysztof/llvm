@@ -60,7 +60,7 @@ jobs:
          - name: L0
            adapter_name: L0
            runner: self-hosted
-           image_options: --user root --cap-add SYS_ADMIN
+           image_options: --privileged --cap-add SYS_ADMIN
            target_devices: level_zero:gpu;opencl:gpu;opencl:cpu
            reset_intel_gpu: true
            extra_lit_opts: --param gpu-intel-gen12=True
