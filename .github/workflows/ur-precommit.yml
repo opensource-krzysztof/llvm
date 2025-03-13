@@ -80,6 +80,7 @@ jobs:
         #   {name: L0, runner: UR_L0, other_adapter: NATIVE_CPU},
         # ]
     uses: ./.github/workflows/ur-build-hw.yml
+    secrets: inherit
     with:
       adapter_name: ${{ matrix.adapter_name }}
       runner_name: ${{ matrix.runner }}
