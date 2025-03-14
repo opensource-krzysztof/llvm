@@ -129,7 +129,7 @@ jobs:
 
     - name: Install UR python dependencies
       working-directory: ${{github.workspace}}/unified-runtime
-      run:  pip install -r third_party/requirements.txt
+      run:  pip install -r third_party/requirements.txt --break-system-packages
     
     - name: Download DPC++
       run: |
