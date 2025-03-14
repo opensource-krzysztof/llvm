@@ -132,7 +132,7 @@ jobs:
       run:  pip install -r third_party/requirements.txt --break-system-packages
       
     - name: Install wget
-      run:  apt-get install -y wget
+      run:  sudo apt-get install -y wget
       
     - name: Download DPC++
       run: |
