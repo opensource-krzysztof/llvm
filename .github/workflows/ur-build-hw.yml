@@ -134,7 +134,6 @@ jobs:
     - name: Download DPC++
       working-directory: ${{github.workspace}}
       run: |
-        mkdir build
         wget https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
         mkdir dpcpp_compiler
         tar -xvf sycl_linux.tar.gz -C dpcpp_compiler
@@ -145,7 +144,7 @@ jobs:
       # ">" is used to avoid adding "\" at the end of each line; this command is quite long
       run: >
         cmake
-        -B${{github.workspace}}/build
+        -B"${{github.workspace}}/build"
         -DCMAKE_C_COMPILER=${{matrix.compiler.c}}
         -DCMAKE_CXX_COMPILER=${{matrix.compiler.cxx}}
         -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
