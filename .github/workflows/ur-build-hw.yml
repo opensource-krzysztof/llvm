@@ -134,11 +134,8 @@ jobs:
     - name: Download DPC++
       run: |
         wget https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
-    - name: Download DPC++
-      run: |
-        wget -v -O ${{github.workspace}}/dpcpp_compiler.tar.gz https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
         mkdir dpcpp_compiler
-        tar -xvf ${{github.workspace}}/dpcpp_compiler.tar.gz -C dpcpp_compiler
+        tar -xvf sycl_linux.tar.gz -C dpcpp_compiler
 
     - name: Configure Unified Runtime project
       working-directory: ${{github.workspace}}/unified-runtime
