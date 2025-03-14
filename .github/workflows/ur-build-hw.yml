@@ -142,6 +142,7 @@ jobs:
       working-directory: ${{github.workspace}}/unified-runtime
       # ">" is used to avoid adding "\" at the end of each line; this command is quite long
       run: >
+        mkdir ${{github.workspace}}/build
         cmake
         -B${{github.workspace}}/build
         -DCMAKE_C_COMPILER=${{matrix.compiler.c}}
