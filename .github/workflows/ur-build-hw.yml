@@ -134,6 +134,7 @@ jobs:
     - name: Download DPC++
       working-directory: ${{github.workspace}}
       run: |
+        mkdir build
         wget https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
         mkdir dpcpp_compiler
         tar -xvf sycl_linux.tar.gz -C dpcpp_compiler
