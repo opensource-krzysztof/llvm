@@ -131,12 +131,9 @@ jobs:
       working-directory: ${{github.workspace}}/unified-runtime
       run:  pip install -r third_party/requirements.txt --break-system-packages
       
-    - name: Install wget
-      run:  wget -v 
-      
     - name: Download DPC++
       run: |
-        wget -v -O ${{github.workspace}}/dpcpp_compiler.tar.gz https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
+        wget -v -O ${{github.workspace}}/dpcpp_compiler.tar.gz https://debian.anexia.at/debian-cd/current/i386/iso-cd/debian-12.9.0-i386-netinst.iso
     - name: Download DPC++
       run: |
         wget -v -O ${{github.workspace}}/dpcpp_compiler.tar.gz https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
