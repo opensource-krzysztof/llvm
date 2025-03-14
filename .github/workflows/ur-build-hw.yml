@@ -132,6 +132,7 @@ jobs:
       run:  pip install -r third_party/requirements.txt --break-system-packages
       
     - name: Download DPC++
+      working-directory: ${{github.workspace}}
       run: |
         wget https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
         mkdir dpcpp_compiler
