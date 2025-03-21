@@ -101,7 +101,7 @@ jobs:
 
     runs-on: ${{inputs.runner_name}}
     container:
-      image: ghcr.io/intel/llvm/ubuntu2204_base
+      image: ghcr.io/intel/llvm/ubuntu2204_build:latest
       credentials:
          username: opensource-krzysztof
          password: ${{ secrets.KEY }}
