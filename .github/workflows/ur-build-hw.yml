@@ -133,7 +133,6 @@ jobs:
 
 
     - name: Install clang
-      working-directory: ${{github.workspace}}/unified-runtime
       run:  apt-get install -y clang
 
       
