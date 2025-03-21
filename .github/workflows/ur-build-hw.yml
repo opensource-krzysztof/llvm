@@ -130,6 +130,10 @@ jobs:
     - name: Install UR python dependencies
       working-directory: ${{github.workspace}}/unified-runtime
       run:  pip install -r third_party/requirements.txt --break-system-packages
+
+    - name: Install clang
+      run:  sudo apt-get install clang-3.5 
+      
       
     - name: Download DPC++
       working-directory: ${{github.workspace}}
