@@ -3,6 +3,23 @@ name: UR - Build adapters, test on HW
 on:
   workflow_call:
     inputs:
+      reset_intel_gpu:
+        type: string
+        required: False
+      extra_lit_opts:
+        description: |
+          Extra options to be added to LIT_OPTS.
+        type: string
+        default: ''
+      target_devices:
+        type: string
+        required: False
+      image:
+        type: string
+        required: False
+      image_options:
+        type: string
+        required: True
       adapter_name:
         required: true
         type: string
@@ -66,7 +83,7 @@ jobs:
   adapter_build_hw:
     name: Build & CTS
     # run only on upstream; forks won't have the HW
-    if: github.repository == 'intel/llvm'
+    # if: github.repository == 'intel/llvm'
     strategy:
       fail-fast: false
       matrix:
@@ -83,7 +100,12 @@ jobs:
         compiler: [{c: gcc, cxx: g++}]
 
     runs-on: ${{inputs.runner_name}}
-
+    container:
+      image: ghcr.io/intel/llvm/ubuntu2204_build:latest
+      credentials:
+         username: opensource-krzysztof
+         password: ${{ secrets.KEY }}
+      options: ${{ inputs.image_options }}
     steps:
     # TODO:
     # - investigate if DUR_CONFORMANCE_AMD_ARCH could be removed
@@ -91,25 +113,45 @@ jobs:
     # - switch to Ninja generator in CMake
     # - downloading DPC++ should be integrated somehow; most likely use nightly release.
     #
+    # - name: Login to GitHub Container Registry
+    #   uses: docker/login-action@v3
+    #   with:
+    #     registry: ghcr.io
+    #     username: ${{ github.actor }}
+    #     password: ${{ secrets.GITHUB_TOKEN }}
+
+
+    - name: Clean
+      run: rm -Rf llvm*
+    
     - name: Checkout LLVM
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
     - name: Install UR python dependencies
       working-directory: ${{github.workspace}}/unified-runtime
-      run: pip install -r third_party/requirements.txt
+      run:  pip install -r third_party/requirements.txt 
 
+
+    - name: Install clang
+      run:  |
+        sudo apt-get -y update
+        sudo apt-get install -y clang
+
+      
     - name: Download DPC++
+      working-directory: ${{github.workspace}}
       run: |
-        wget -O ${{github.workspace}}/dpcpp_compiler.tar.gz https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
+        wget https://github.com/intel/llvm/releases/download/nightly-2024-12-12/sycl_linux.tar.gz
         mkdir dpcpp_compiler
-        tar -xvf ${{github.workspace}}/dpcpp_compiler.tar.gz -C dpcpp_compiler
+        tar -xvf sycl_linux.tar.gz -C dpcpp_compiler
+        ls -al 
 
     - name: Configure Unified Runtime project
       working-directory: ${{github.workspace}}/unified-runtime
       # ">" is used to avoid adding "\" at the end of each line; this command is quite long
       run: >
         cmake
-        -B${{github.workspace}}/build
+        -B"${{github.workspace}}/build"
         -DCMAKE_C_COMPILER=${{matrix.compiler.c}}
         -DCMAKE_CXX_COMPILER=${{matrix.compiler.cxx}}
         -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
@@ -136,18 +178,12 @@ jobs:
       run: cmake --install ${{github.workspace}}/build
 
     - name: Test adapter specific
-      env:
-        ZE_ENABLE_LOADER_DEBUG_TRACE: 1
-        ZE_DEBUG: 1
-      run: ctest -C ${{matrix.build_type}} --test-dir ${{github.workspace}}/build --output-on-failure -L "adapter-specific" -E "memcheck" --timeout 600 -VV
+      run: ctest -C ${{matrix.build_type}} --test-dir ${{github.workspace}}/build --output-on-failure -L "adapter-specific" -E "memcheck" --timeout 600
       # Don't run adapter specific tests when building multiple adapters
       if: ${{ matrix.adapter.other_name == '' }}
 
     - name: Test adapters
-      env:
-        ZE_ENABLE_LOADER_DEBUG_TRACE: 1
-        ZE_DEBUG: 1
-      run: env UR_CTS_ADAPTER_PLATFORM="${{matrix.adapter.platform}}" ctest -C ${{matrix.build_type}} --test-dir ${{github.workspace}}/build --output-on-failure -L "conformance" --timeout 600 -VV
+      run: env UR_CTS_ADAPTER_PLATFORM="${{matrix.adapter.platform}}" ctest -C ${{matrix.build_type}} --test-dir ${{github.workspace}}/build --output-on-failure -L "conformance" --timeout 600
 
     - name: Get information about platform
       if: ${{ always() }}
