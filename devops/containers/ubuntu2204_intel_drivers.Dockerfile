@@ -25,6 +25,9 @@ RUN --mount=type=secret,id=github_token \
     fi && \
     GITHUB_TOKEN=$(cat /run/secrets/github_token) /install_drivers.sh $install_driver_opt --all
 
+COPY scripts/install_opencl.sh /install_opencl.sh
+RUN /install_opencl.sh
+
 COPY scripts/drivers_entrypoint.sh /drivers_entrypoint.sh
 
 USER sycl
